@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -16,128 +15,106 @@ public class RegisterEdit {
     private JLabel lblRePassword;
     private JLabel lblEmail;
     private JTextField txtEmail;
-    private JPanel panelRegister;
+    private JPanel MainPanel;
 
 
-    public RegisterEdit () {
+    public RegisterEdit() throws SQLException {
 
         btnRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-//                JOptionPane.showMessageDialog(null,txtUsername.getText()+" "+
-//                        new String(txtPassword.getPassword())+" "+ txtEmail.getText());
-
-
-                /*if(txtUsername.equals(" ")|| txtPassword.equals(" ") || txtRePassword.equals(" ") || txtEmail.equals(" ")) {
-
-                    JOptionPane.showMessageDialog(null, "\n" +
-                            "ใส่ช้อมูลไม่ครบ");
-
-                }*/
                 PreparedStatement pst;
 
-              if( new String(txtPassword.getPassword()).equals( new String(txtRePassword.getPassword()))){
+                if (txtUsername.getText().equals("") || txtEmail.getText().equals("") ||
+                        new String(txtPassword.getPassword()).equals("") ||
+                        new String(txtRePassword.getPassword()).equals("")) {
+                    JOptionPane.showMessageDialog(null, "กรุณากรอกข้อมูลให้ครบ !");
+                } else {
+                    if (new String(txtPassword.getPassword()).equals(new String(txtRePassword.getPassword()))) {
 
 
-                try{
-        String serverName = "sql12.freemysqlhosting.net";
-        String mydatabase = "sql12255832";
-        String url = "jdbc:mysql://" + serverName + "/" + mydatabase;
-        String username = "sql12255832";
-        String password = "VqusRaY3qH";
-        Connection connection = DriverManager.getConnection(url, username, password);
-        connection.createStatement();
+                        try {
+                            String serverName = "sql12.freemysqlhosting.net";
+                            String mydatabase = "sql12255832";
+                            String url = "jdbc:mysql://" + serverName + "/" + mydatabase;
+                            String username = "sql12255832";
+                            String password = "VqusRaY3qH";
+                            Connection connection = DriverManager.getConnection(url, username, password);
+                            connection.createStatement();
+                            //เช็คว่ามี user นี้หรือยัง
+                            String CheckUser = txtUsername.getText();
+                            String sql = "SELECT User_Name FROM sql12255832.User where User_Name=?";
+                            pst = connection.prepareStatement(sql);
+                            pst.setString(1, CheckUser);
+                            ResultSet rs = pst.executeQuery();
 
-                    String sql ="Insert into User(User_Name, User_Email, User_Password) values (?,?,?)";
+///
 
-                    pst=connection.prepareStatement(sql);
-                    pst.setString(1, txtUsername.getText());
-                    pst.setString(2, txtEmail.getText());
-                    pst.setString(3,  new String(txtPassword.getPassword()));
-                    pst.execute();
+                            boolean russ = rs.next();
+                            if (russ == true) {
+                                JOptionPane.showMessageDialog(null, "มี User ซ้ำ");
+                            } else {
+                                InsertUser();
+                            }
 
 
-                    JOptionPane.showMessageDialog(null, "ลงทะเบียนเสร็จสิ้น");
-                    txtUsername.setText("");
-                    txtPassword.setText("");
-                    txtRePassword.setText("");
-                    txtEmail.setText("");
+                        } catch (Exception String) {
+                            JOptionPane.showMessageDialog(null, e);
 
+                        }
+
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "รหัสผ่านไม่ตรงกัน");
+
+                    }
                 }
 
-                catch(Exception String) {
-                    JOptionPane.showMessageDialog(null, e);
-
-                } if( new String(txtPassword.getPassword()).equals( new String(txtRePassword.getPassword()))){
-                      JOptionPane.showMessageDialog(null, "ลงทะเบียนเสร็จสิ้น");
-                      txtUsername.setText("");
-                      txtPassword.setText("");
-                      txtRePassword.setText("");
-                      txtEmail.setText("");
-                  }
-
-
-            }
-                else{
-                    JOptionPane.showMessageDialog(null, "รหัสผ่านไม่ตรงกัน");
-
-                }
-
-            }
-
-            });
-
-        btnClear.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
             }
         });
-        btnClear.addActionListener(new ActionListener() {
+
+        btnRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 txtUsername.setText("");
                 txtPassword.setText("");
                 txtRePassword.setText("");
                 txtEmail.setText("");
             }
         });
-        btnRegister.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
     }
 
-    public static void main(String[] args) throws SQLException {
-        JFrame frame = new JFrame();
-        RegisterEdit register = new RegisterEdit();
-        frame.setContentPane(register.panelRegister);
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(500,500));
-        frame.setVisible(true);
+    public void InsertUser() {
+        PreparedStatement pst;
+        try {
+            String serverName = "sql12.freemysqlhosting.net";
+            String mydatabase = "sql12255832";
+            String url = "jdbc:mysql://" + serverName + "/" + mydatabase;
+            String username = "sql12255832";
+            String password = "VqusRaY3qH";
+            Connection connection = DriverManager.getConnection(url, username, password);
+            connection.createStatement();
 
+            String sql = "Insert into User(User_Name, User_Email, User_Password) values (?,?,?)";
 
+            pst = connection.prepareStatement(sql);
+            pst.setString(1, txtUsername.getText());
+            pst.setString(2, txtEmail.getText());
+            pst.setString(3, new String(txtPassword.getPassword()));
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "finish");
+            txtUsername.setText("");
+            txtPassword.setText("");
+            txtRePassword.setText("");
+            txtEmail.setText("");
+        } catch (Exception String) {
 
+        }
 
-        String serverName = "sql12.freemysqlhosting.net";
-        String mydatabase = "sql12255832";
-        String url = "jdbc:mysql://" + serverName + "/" + mydatabase;
-        String username = "sql12255832";
-        String password = "VqusRaY3qH";
-        Connection connection = DriverManager.getConnection(url, username, password);
-        connection.createStatement();
-        Statement s =    connection.createStatement();
-
-
-
+        }
+    public JPanel getMainPanel () { return MainPanel;}
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
-}
+
