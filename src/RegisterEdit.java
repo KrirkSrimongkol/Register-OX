@@ -75,7 +75,16 @@ public class RegisterEdit {
             }
         });
 
-        btnRegister.addActionListener(new ActionListener() {
+     /*   btnRegister.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                txtUsername.setText("");
+                txtPassword.setText("");
+                txtRePassword.setText("");
+                txtEmail.setText("");
+            }
+        });*/
+        btnClear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 txtUsername.setText("");
@@ -104,7 +113,7 @@ public class RegisterEdit {
             pst.setString(2, txtEmail.getText());
             pst.setString(3, new String(txtPassword.getPassword()));
             pst.execute();
-            JOptionPane.showMessageDialog(null, "finish");
+            JOptionPane.showMessageDialog(null, "กรอกข้อมูลสำเห็จ");
             txtUsername.setText("");
             txtPassword.setText("");
             txtRePassword.setText("");
